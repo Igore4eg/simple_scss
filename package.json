@@ -18,6 +18,11 @@
   "homepage": "https://github.com/Igore4eg/simple_scss#readme",
   "devDependencies": {
     "browser-sync": "^2.26.13",
-    "gulp": "^4.0.2"
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^4.1.0",
+    "gulp-uglify-es": "^2.0.0"
   }
 }

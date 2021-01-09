@@ -1,0 +1,33 @@
+a{
+    text-decoration: none; 
+}
+body{
+    width: auto;
+    color: #8d96bd;
+}
+
+header{
+    position: sticky;
+    top: 0;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    z-index: 10;
+}
+.container {
+    width: 1200px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+
+.headerContent{
+    display: flex;
+    align-items: center;
+    justify-content: space-around; 
+    min-width: 330px;
+}
+
