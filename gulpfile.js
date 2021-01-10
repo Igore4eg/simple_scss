@@ -19,6 +19,15 @@ const autoprefixer = require('gulp-autoprefixer');
 // Подключаем модуль gulp-clean-css
 const cleancss = require('gulp-clean-css');
 
+// Подключаем gulp-imagemin для работы с изображениями
+const imagemin = require('gulp-imagemin');
+
+// Подключаем модуль gulp-newer
+const newer = require('gulp-newer');
+	
+// Подключаем модуль del
+const del = require('del');
+
 function startwatch() {
 	
 	// Мониторим файлы препроцессора на изменения
@@ -48,9 +57,18 @@ function styles() {
 	.pipe(browserSync.stream()) // Сделаем инъекцию в браузер
 }
 
+function images() {
+	return src('app/images/src/**/*') // Берём все изображения из папки источника
+	.pipe(newer('app/images/dest/')) // Проверяем, было ли изменено (сжато) изображение ранее
+	.pipe(imagemin()) // Сжимаем и оптимизируем изображеня
+	.pipe(dest('app/images/dest/')) // Выгружаем оптимизированные изображения в папку назначения
+}
 
 exports.browsersync = browsersync;
 
 exports.styles = styles;
+
+// Экспорт функции images() в таск images
+exports.images = images;
 
 exports.default = parallel(styles, browsersync, startwatch);
