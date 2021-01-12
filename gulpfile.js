@@ -32,9 +32,7 @@ function startwatch() {
 	
 	// Мониторим файлы препроцессора на изменения
 	watch('app/sass/*.scss', styles);
-	// Выбираем все файлы JS в проекте, а затем исключим с суффиксом .min.js
-	//watch(['app/**/*.js', '!app/**/*.min.js'], scripts);
-
+	
 	// Мониторим файлы HTML на изменения
 	watch('app/**/*.html').on('change', browserSync.reload);
  
@@ -68,7 +66,6 @@ exports.browsersync = browsersync;
 
 exports.styles = styles;
 
-// Экспорт функции images() в таск images
 exports.images = images;
 
 exports.default = parallel(styles, browsersync, startwatch);
