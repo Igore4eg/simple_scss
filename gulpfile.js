@@ -1,39 +1,31 @@
-// Определяем константы Gulp
+
 const { src, dest, parallel, series, watch } = require('gulp');
 
-// Подключаем Browsersync
 const browserSync = require('browser-sync').create();
 
-// Подключаем gulp-concat
+
 const concat = require('gulp-concat');
- 
-// Подключаем gulp-uglify-es
+
 const uglify = require('gulp-uglify-es').default;
 
-// Подключаем модули gulp-sass 
+
 const sass = require('gulp-sass');
 
-// Подключаем Autoprefixer
 const autoprefixer = require('gulp-autoprefixer');
 
-// Подключаем модуль gulp-clean-css
 const cleancss = require('gulp-clean-css');
 
-// Подключаем gulp-imagemin для работы с изображениями
 const imagemin = require('gulp-imagemin');
 
-// Подключаем модуль gulp-newer
 const newer = require('gulp-newer');
 	
-// Подключаем модуль del
 const del = require('del');
 
 function startwatch() {
 	
-	// Мониторим файлы препроцессора на изменения
-	watch('app/sass/*.scss', styles);
+	// Мониторим файлы на изменения
 	
-	// Мониторим файлы HTML на изменения
+	watch('app/sass/*.scss', styles);
 	watch('app/**/*.html').on('change', browserSync.reload);
  
 }
