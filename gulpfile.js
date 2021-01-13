@@ -19,6 +19,8 @@ const newer = require('gulp-newer');
 	
 const del = require('del');
 
+const svgSprite = require('gulp-svg-sprite');
+
 function startwatch() {
 	
 	// Мониторим файлы на изменения
@@ -52,10 +54,25 @@ function images() {
 	.pipe(dest('app/images/dest/')) // Выгружаем оптимизированные изображения в папку назначения
 }
 
+function sSprite(){
+	return src('app/images/dest/*.svg') // svg files for sprite
+		.pipe(svgSprite({
+			mode: {
+				stack: {
+					sprite: "../sprite.svg"  //sprite file name
+				}
+			},
+		}
+	))
+	.pipe(dest('app/images/dest/'));
+}
+
 exports.browsersync = browsersync;
 
 exports.styles = styles;
 
 exports.images = images;
+
+exports.sSprite = sSprite;
 
 exports.default = parallel(styles, browsersync, startwatch);
