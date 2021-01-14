@@ -1,34 +1,35 @@
 
-const { src, dest, parallel, series, watch } = require('gulp');
-
+const autoprefixer = require('gulp-autoprefixer');
 const browserSync = require('browser-sync').create();
-
+const cleancss = require('gulp-clean-css');
 const concat = require('gulp-concat');
-
+const del = require('del');
+const gulp = require('gulp');
+const imagemin = require('gulp-imagemin');
+const newer = require('gulp-newer');
+const sass = require('gulp-sass');
+const svgSprite = require('gulp-svg-sprite');
 const uglify = require('gulp-uglify-es').default;
 
-const sass = require('gulp-sass');
 
-const autoprefixer = require('gulp-autoprefixer');
+// https://www.npmjs.com/package/gulp-sourcemaps
+// https://www.npmjs.com/package/gulp-clean
+// https://node-swig.github.io/swig-templates/
+// https://www.npmjs.com/package/gulp-swig
+// https://www.npmjs.com/package/gulp-if
+// https://www.npmjs.com/package/gulp-debug
+// https://www.npmjs.com/package/gulp-imagemin
 
-const cleancss = require('gulp-clean-css');
 
-const imagemin = require('gulp-imagemin');
+const { src, dest, parallel, series, watch } = gulp;
 
-const newer = require('gulp-newer');
-	
-const del = require('del');
-
-const svgSprite = require('gulp-svg-sprite');
 
 function startwatch() {
-	
 	// Мониторим файлы на изменения
-	
-	watch('app/sass/*.scss', styles);
-	watch('app/**/*.html').on('change', browserSync.reload);
- 
+	gulp.watch('app/sass/*.scss', styles);
+	gulp.watch('app/**/*.html').on('change', browserSync.reload);
 }
+
 function browsersync() {
 	browserSync.init({ // Инициализация Browsersync
 		server: { baseDir: 'app/' }, // Указываем папку сервера
@@ -39,12 +40,12 @@ function browsersync() {
 
 function styles() {
 	return src('app/sass/main.scss') // Выбираем источник: "app/sass/main.sass" или "app/less/main.less"
-	.pipe(eval(sass)()) // Преобразуем значение переменной "preprocessor" в функцию
-	.pipe(concat('app.min.css')) // Конкатенируем в файл app.min.js
-	.pipe(autoprefixer({ overrideBrowserslist: ['last 10 versions'], grid: true })) // Создадим префиксы с помощью Autoprefixer
-	.pipe(cleancss( { level: { 1: { specialComments: 0 } }/* , format: 'beautify' */ } )) // Минифицируем стили
-	.pipe(dest('app/css/')) // Выгрузим результат в папку "app/css/"
-	.pipe(browserSync.stream()) // Сделаем инъекцию в браузер
+		.pipe(sass()) // Преобразуем значение переменной "preprocessor" в функцию
+		.pipe(concat('app.min.css')) // Конкатенируем в файл app.min.js
+		.pipe(autoprefixer({ overrideBrowserslist: ['last 10 versions'], grid: true })) // Создадим префиксы с помощью Autoprefixer
+		.pipe(cleancss( { level: { 1: { specialComments: 0 } }/* , format: 'beautify' */ } )) // Минифицируем стили
+		.pipe(dest('app/css/')) // Выгрузим результат в папку "app/css/"
+		.pipe(browserSync.stream()) // Сделаем инъекцию в браузер
 }
 
 function images() {
