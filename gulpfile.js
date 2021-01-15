@@ -26,7 +26,7 @@ const { src, dest, parallel, series, watch } = gulp;
 
 
 function startwatch  () {
-	gulp.watch('app/sass/*.scss', styles);
+	gulp.watch('app/sass/*.scss', gulp.series('styles'));
 	gulp.watch('app/**/*.html').on('change', browserSync.reload);
 };
 
@@ -87,6 +87,7 @@ function sSprite(){
 gulp.task('clean-svg', function(){
 	return src('app/images/src/*.svg', {read: false})
 		.pipe(clean({force: true}))
+		.pipe(debug({title: 'clean-svg'}))
 });
 
 gulp.task('default',  gulp.parallel('styles', 'browsersync', startwatch));
