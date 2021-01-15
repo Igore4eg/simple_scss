@@ -10,9 +10,10 @@ const newer = require('gulp-newer');
 const sass = require('gulp-sass');
 const svgSprite = require('gulp-svg-sprite');
 const uglify = require('gulp-uglify-es').default;
+const sourcemaps = require('gulp-sourcemaps');
 
 
-// https://www.npmjs.com/package/gulp-sourcemaps
+// https://www.npmjs.com/package/gulp-sourcemaps   ++++
 // https://www.npmjs.com/package/gulp-clean
 // https://node-swig.github.io/swig-templates/
 // https://www.npmjs.com/package/gulp-swig
@@ -24,36 +25,49 @@ const uglify = require('gulp-uglify-es').default;
 const { src, dest, parallel, series, watch } = gulp;
 
 
-function startwatch() {
-	// Мониторим файлы на изменения
+function startwatch  () {
 	gulp.watch('app/sass/*.scss', styles);
 	gulp.watch('app/**/*.html').on('change', browserSync.reload);
-}
+};
 
-function browsersync() {
+gulp.task('browsersync', function(){
 	browserSync.init({ // Инициализация Browsersync
 		server: { baseDir: 'app/' }, // Указываем папку сервера
 		notify: false, // Отключаем уведомления
 		online: true // Режим работы: true или false
 	})
-}
+});
 
-function styles() {
-	return src('app/sass/main.scss') // Выбираем источник: "app/sass/main.sass" или "app/less/main.less"
-		.pipe(sass()) // Преобразуем значение переменной "preprocessor" в функцию
-		.pipe(concat('app.min.css')) // Конкатенируем в файл app.min.js
-		.pipe(autoprefixer({ overrideBrowserslist: ['last 10 versions'], grid: true })) // Создадим префиксы с помощью Autoprefixer
-		.pipe(cleancss( { level: { 1: { specialComments: 0 } }/* , format: 'beautify' */ } )) // Минифицируем стили
-		.pipe(dest('app/css/')) // Выгрузим результат в папку "app/css/"
-		.pipe(browserSync.stream()) // Сделаем инъекцию в браузер
-}
+gulp.task('styles' , function() {
+	return src('app/sass/main.scss')
+		.pipe(sourcemaps.init())
+		.pipe(sass()) 
+		.pipe(autoprefixer({ overrideBrowserslist: ['last 10 versions'], grid: true })) 
+		.pipe(cleancss( { level: { 1: { specialComments: 0 } } } ))
+		.pipe(sourcemaps.write())
+		.pipe(dest('app/css/')) 
+		.pipe(browserSync.stream())
+});
 
-function images() {
+gulp.task('images', function(){
 	return src('app/images/src/**/*') // Берём все изображения из папки источника
-	.pipe(newer('app/images/dest/')) // Проверяем, было ли изменено (сжато) изображение ранее
-	.pipe(imagemin()) // Сжимаем и оптимизируем изображеня
-	.pipe(dest('app/images/dest/')) // Выгружаем оптимизированные изображения в папку назначения
-}
+		.pipe(newer('app/images/dest/')) // Проверяем, было ли изменено (сжато) изображение ранее
+		.pipe(imagemin()) // Сжимаем и оптимизируем изображеня
+		.pipe(dest('app/images/dest/')) // Выгружаем оптимизированные изображения в папку назначения
+});
+
+gulp.task('sSprite', function(){
+	return src('app/images/dest/*.svg') // svg files for sprite
+		.pipe(svgSprite({
+			mode: {
+				stack: {
+					sprite: "../sprite.svg"  //sprite file name
+				}
+			},
+		}
+	))
+	.pipe(dest('app/images/dest/'));
+});
 
 function sSprite(){
 	return src('app/images/dest/*.svg') // svg files for sprite
@@ -68,12 +82,4 @@ function sSprite(){
 	.pipe(dest('app/images/dest/'));
 }
 
-exports.browsersync = browsersync;
-
-exports.styles = styles;
-
-exports.images = images;
-
-exports.sSprite = sSprite;
-
-exports.default = parallel(styles, browsersync, startwatch);
+//exports.default = parallel(styles, browsersync, startwatch);
