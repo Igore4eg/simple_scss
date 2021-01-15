@@ -7,7 +7,6 @@ const imagemin = require('gulp-imagemin');
 const newer = require('gulp-newer');
 const sass = require('gulp-sass');
 const svgSprite = require('gulp-svg-sprite');
-const uglify = require('gulp-uglify-es').default;
 const sourcemaps = require('gulp-sourcemaps');
 const debug = require('gulp-debug');
 const clean = require('gulp-clean');
@@ -71,18 +70,6 @@ gulp.task('sSprite', function(){
 	.pipe(dest('app/images/dest/'));
 });
 
-function sSprite(){
-	return src('app/images/dest/*.svg') // svg files for sprite
-		.pipe(svgSprite({
-			mode: {
-				stack: {
-					sprite: "../sprite.svg"  //sprite file name
-				}
-			},
-		}
-	))
-	.pipe(dest('app/images/dest/'));
-}
 
 gulp.task('clean-svg', function(){
 	return src('app/images/src/*.svg', {read: false})

@@ -19,7 +19,6 @@
   "homepage": "https://github.com/Igore4eg/simple_scss#readme",
   "devDependencies": {
     "browser-sync": "^2.26.13",
-    "del": "^6.0.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-clean": "^0.4.0",
@@ -30,7 +29,6 @@
     "gulp-newer": "^1.4.0",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^3.0.0",
-    "gulp-svg-sprite": "^1.5.0",
-    "gulp-uglify-es": "^2.0.0"
+    "gulp-svg-sprite": "^1.5.0"
   }
 }
