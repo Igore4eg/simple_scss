@@ -2,8 +2,6 @@
 const autoprefixer = require('gulp-autoprefixer');
 const browserSync = require('browser-sync').create();
 const cleancss = require('gulp-clean-css');
-const concat = require('gulp-concat');
-const del = require('del');
 const gulp = require('gulp');
 const imagemin = require('gulp-imagemin');
 const newer = require('gulp-newer');
@@ -11,14 +9,16 @@ const sass = require('gulp-sass');
 const svgSprite = require('gulp-svg-sprite');
 const uglify = require('gulp-uglify-es').default;
 const sourcemaps = require('gulp-sourcemaps');
+const debug = require('gulp-debug');
+const clean = require('gulp-clean');
 
 
-// https://www.npmjs.com/package/gulp-sourcemaps   ++++
-// https://www.npmjs.com/package/gulp-clean
+// https://www.npmjs.com/package/gulp-sourcemaps	++++
+// https://www.npmjs.com/package/gulp-clean			++++
 // https://node-swig.github.io/swig-templates/
 // https://www.npmjs.com/package/gulp-swig
 // https://www.npmjs.com/package/gulp-if
-// https://www.npmjs.com/package/gulp-debug
+// https://www.npmjs.com/package/gulp-debug			++++
 // https://www.npmjs.com/package/gulp-imagemin
 
 
@@ -42,9 +42,11 @@ gulp.task('styles' , function() {
 	return src('app/sass/main.scss')
 		.pipe(sourcemaps.init())
 		.pipe(sass()) 
+		.pipe(debug({title: 'sass'}))
 		.pipe(autoprefixer({ overrideBrowserslist: ['last 10 versions'], grid: true })) 
 		.pipe(cleancss( { level: { 1: { specialComments: 0 } } } ))
 		.pipe(sourcemaps.write())
+		.pipe(debug({title: 'sourcemap'}))
 		.pipe(dest('app/css/')) 
 		.pipe(browserSync.stream())
 });
@@ -82,6 +84,10 @@ function sSprite(){
 	.pipe(dest('app/images/dest/'));
 }
 
+gulp.task('clean-svg', function(){
+	return src('app/images/src/*.svg', {read: false})
+		.pipe(clean({force: true}))
+});
 
 gulp.task('default',  gulp.parallel('styles', 'browsersync', startwatch));
 
