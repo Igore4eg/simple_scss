@@ -82,4 +82,6 @@ function sSprite(){
 	.pipe(dest('app/images/dest/'));
 }
 
-//exports.default = parallel(styles, browsersync, startwatch);
+
+gulp.task('default',  gulp.parallel('styles', 'browsersync', startwatch));
+
