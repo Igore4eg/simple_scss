@@ -20,7 +20,7 @@ const sourcemaps = require('gulp-sourcemaps');
 // https://www.npmjs.com/package/gulp-swig			/неактуально
 // https://www.npmjs.com/package/gulp-if			++++
 // https://www.npmjs.com/package/gulp-debug			++++
-// https://www.npmjs.com/package/gulp-imagemin		
+// https://www.npmjs.com/package/gulp-imagemin		++++
 
 const { src, dest, parallel, series, watch } = gulp;
 
